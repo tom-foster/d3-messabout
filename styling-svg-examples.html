@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SVG styling, layering and drawing</title>
+    <style>
+        svg .second-circle {
+            fill: pink;
+            stroke: hotpink;
+            stroke-width: 10;
+        }
+        
+        code {
+            background-color: #e9e9e9;
+        }
+    </style>
+</head>
+<body>
+    <h1>You'll need to see the source to demonstrate all styling</h1>
+    <p>The first circle demonstrates inline style.</p>
+    <svg>
+        <circle cx="25" cy="25" r="22" fill="yellow" stroke="orange" stroke-width: "5" />
+    </svg>
+    <p>The second circle demonstrates style completed as css. I've put it in the style in the head of the document, but it could be the same as putting it in a css file.</p>
+
+    <svg>
+        <circle cx="25" cy="25" r="20" class="second-circle"/>
+    </svg>
+
+    <p>For readibility decalre in the css that it is being applied to an svg.</p>
+    <code>
+        svg .second-circle {
+            fill: pink;
+            stroke: hotpink;
+            stroke-width: 10;        
+        }
+    </code>
+
+    <p>Using classes can be reused (in this instance it could be applied to a different SVG with the class second circle</p>
+    <svg width="100" height="30">
+        <rect x="0" y="0" width="100" height="30" class="second-circle"/>
+    </svg>
+
+    <h2>Layering and Drawing Order</h2>
+    <p>SVG's do not support layering so the z-index can't be used.</p>
+    <svg width="500" height="50">
+        <rect x="0" y="0" width="30" height="30" fill="purple" />
+        <rect x="20" y="5" width="30" height="30" fill="blue" />
+        <rect x="40" y="10" width="30" height="30" fill="green" />
+        <rect x="60" y="15" width="30" height="30" fill="yellow" />
+        <rect x="80" y="20" width="30" height="30" fill="red" />
+    </svg>
+
+    <h2>Transparency</h2>
+    <p>It's useful to use transparency if we're going to overlap using svgs.</p>
+    <p>You can use either rgba or opacity they behave slightly differently.</p>
+    <h3>Using rgba()</h3>
+    <svg width="500" height="50">
+        <circle cx="25" cy="25" r="20" fill="rgba(128, 0, 128, 1.0)" />
+        <circle cx="50" cy="25" r="20" fill="rgba(0,0,255, 0.75)" />
+        <circle cx="75" cy="25" r="20" fill="rgba(0,255,0, 0.5)"/>
+        <circle cx="100" cy="25" r="20" fill="rgba(255, 255, 0, 0.25)" />
+        <circle cx="125" cy="25" r="20" fill="rgba(255, 0, 0, 0.1)"/>
+    </svg>
+    <p>Using rgba() on stroke has to be applied independently</p>
+    <svg width="500" height="50">
+        <circle cx="25" cy="25" r="20" fill="rgba(128, 0, 128, 0.75)" stroke="rgba(0,255,0,0.25)" stroke-width="10"/>
+        <circle cx="75" cy="25" r="20" fill="rgba(0, 255, 0, 0.75)" stroke="rgba(0,0,255, 0.25)" stroke-width="10"/>
+        <circle cx="125" cy="25" r="20" fill="rgba(255, 255, 0, 0.75)" stroke="rgba(255, 0, 0, 0.25)" stroke-width="10"/>
+    </svg>
+    <p>As you can see the stroke looks like two seperate 5px strokes.</p>
+    <h3>To apply transpency to an entire element set opacity attribute.</h3>
+    <svg width="500" height="50">
+        <circle cx="25" cy="25" r="20" fill="purple" stroke="green" stroke-width="10" opacity="0.9"/>
+        <circle cx="65" cy="25" r="20" fill="green" stroke="blue" stroke-width="10" opacity="0.5"/>
+        <circle cx="105" cy="25" r="20" fill="yellow" stroke="red" stroke-width="10" opacity="0.1"/>
+    </svg>
+
+    <h3>Opacity can be applied to rgba as well</h3>
+    <svg width="500" height="50">
+        <circle cx="25" cy="25" r="20" fill="rgba(128, 0, 128, 0.75)" stroke="rgba(0, 255, 0, 0.25)" stroke-width="10" />
+        <circle cx="65" cy="25" r="20" fill="rgba(128, 0, 128, 0.75)" stroke="rgba(0, 255, 0, 0.25)" stroke-width="10" opacity="0.5"/>
+        <circle cx="105" cy="25" r="20" fill="rgba(128, 0, 128, 0.75)" stroke="rgba(0, 255, 0, 0.25)" stroke-width="10" opacity="0.2"/>
+    </svg>
+</body>
+</html>
