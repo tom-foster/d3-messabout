@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple dataset</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        var dataset = [5, 10, 15, 20, 25];
+        //last line has changed to return the data in the text
+        d3.select('body').selectAll('p')
+            .data(dataset)
+            .enter()
+            .append('p')
+            //when using data you can reference it using d (or another name but it is stand in d3)
+            .text(function(d) {
+                return "I can count up using the data up to " + d;
+                })
+            //you can also style the output
+            //.style("color", 'red');
+            //and pass a function into style as well to return a string
+            .style('color', function(d) {
+                if (d > 10) { //threshold of 10
+                    return 'red';
+                } else {
+                    return 'blue';
+                }
+            });
+    </script>
+</body>
+</html>
