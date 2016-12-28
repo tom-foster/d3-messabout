@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <script>
+       		var dataset;
+
+			d3.csv("data/food.csv", function(error, data) {
+				if (error) {
+					console.log(error);
+				} else {
+					console.log(data);
+					dataset = data; //once loaded copy to dataset
+					//log all other commands too when they come.
+                    document.write(dataset[0].Deliciousness);
+                    document.write(' ' + dataset[0].Food)
+				}
+				
+			});
+        
+    </script>
+</body>
+</html>
