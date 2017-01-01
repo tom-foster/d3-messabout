@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+    <!--This should typically be played out over it's own css stylesheet-->
+    <style>
+        div.bar {
+            display: inline-block;
+            width: 20px;
+            height: 75px;
+            margin-right: 2px;
+            background-color: hotpink;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        
+        var dataset = [5, 10, 15, 20, 25];
+
+        d3.select('body').selectAll('div')
+            .data(dataset)
+            .enter()
+            .append('div')
+            .attr('class', 'bar')
+            .style("height", function(d) {
+                var barHeight = d * 5; //scale up by a factor of 5
+                return barHeight + "px";
+                //another way to have done this would have been a single line
+                // return d * 5 + "px";
+
+            });
+            // classed can be used with true or false to add or remove class
+            //.classed('bar', false);
+
+        
+    </script>
+</body>
+</html>

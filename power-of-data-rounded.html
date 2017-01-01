@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+    <style type="text/css">
+        div.bar {
+            display: inline-block;
+            width: 20px;
+            height: 75px;
+            margin-right: 2px;
+            background-color: hotpink;
+        }
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+        var dataset = [];
+
+        for (var i = 0; i < 25; i++ ) {
+            // Math.round() could be used but Math.floor gives greater control always rounding down
+            var newNumber = Math.floor(Math.random() * 30);
+            dataset.push(newNumber);
+        }
+
+        //console.log to see the data
+        console.log(dataset);
+
+        d3.select('body').selectAll('div')
+            .data(dataset)
+            .enter()
+            .append('div')
+            .attr('class', 'bar')
+            .style("height", function(d) {
+                var barHeight = d * 5;
+                return barHeight + 'px';
+            });
+    </script>
+</body>
+</html>
