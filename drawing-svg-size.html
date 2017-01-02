@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        //width and height
+        var w = 500;
+        var h = 50;
+
+        //create svg element
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h)
+                    //some style just to show it
+                    .style('border', '0.1px solid royalblue');
+
+    </script>
+</body>
+</html>
