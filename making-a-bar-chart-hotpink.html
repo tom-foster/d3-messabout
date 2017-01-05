@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        //width and height
+        var w = 500;
+        var h = 100;
+        var barPadding = 1;
+
+        //create dataset random 25
+        var dataset = [];
+
+        for (var i = 0; i < 25; i++) {
+            var datum = Math.floor(Math.random() * 25);
+            dataset.push(datum);
+        }
+
+        //create svg
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //create rectangles
+        svg.selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attr('x', function(d, i) {
+                return i * (w / dataset.length);
+            })
+            .attr('y', function(d) {
+                //return h - d;
+                //scale up by factor of 4
+                return h - (d * 4);
+            })
+            .attr('width', w / dataset.length - barPadding)
+            .attr('height', function(d) {
+                //return d;
+                //scale up by factor of 4
+                return d * 4;
+            })
+            //hexcode for hotpink #ff69b4 rgb(255, 105, 180)
+            .attr('fill', '#ff69b4');
+        
+    </script>
+</body>
+</html>
