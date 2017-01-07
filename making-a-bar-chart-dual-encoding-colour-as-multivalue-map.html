@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+    <script src="d3/d3-selection-multi.min.js"></script>
+    <!--<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>*/-->
+</head>
+<body>
+    <h1>Multivalue Maps</h1>
+    <p>Requires an additional package. Check your scripts please. Found at <a href="https://github.com/d3/d3-selection-multi">Github</a> or <a href="https://d3js.org/d3-selection-multi.v1.min.js">https://d3js.org/d3-selection-multi.v1.min.js</a></p>
+    <script>
+        
+        //width and height
+        var w = 500;
+        var h = 100;
+        var barPadding = 1;
+
+        //dataset random 25 values less than 25
+        var dataset = [];
+
+        for (var i = 0; i < 25; i++) {
+            var datum = Math.floor(Math.random() * 30);
+            dataset.push(datum);
+        }
+
+        //create svg with multivalue maps
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attrs({
+                        width: w,
+                        height: h
+                    });
+        
+        //create rectangles from dataset using multivalue maps
+        svg.selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attrs({
+                x: function(d, i) {return i * (w / dataset.length);},
+                y: function(d) {return h - (d * 4);},
+                width: w / dataset.length - barPadding,
+                height: function(d) {return d * 4},
+                fill: function(d) {return 'rgb(' + (140 + (d * 5)) + ',105, 180)';}
+            });
+
+    </script>
+</body>
+</html>
