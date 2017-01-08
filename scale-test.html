@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+    <style>
+        div {
+            background-color: #e9e9e9;
+        }
+
+        span.tabbed {
+            margin-left: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test in console</h1>
+    <p>For version 4, of d3.js scale is defined as scaleLinear.</p>
+    <p>If your using chrome dev tools you'll see it pop up as you type in console.</p>
+    <div>
+        <code>
+            var scale = d3.scaleLinear()</br>
+                        <span class="tabbed">.domain([100, 500])</span><br>
+                        <span class="tabbed">.range([10, 350]);</span><br>
+
+            //then try out these<br>
+            scale(100); //returns 10<br>
+            scale(300); //returns 180<br>
+            scale(500); //returns 350<br>
+        </code>
+    </div>
+    <script>
+        
+        // var dataset = [];
+        // //create 10 random array of 2.
+        // for (var i = 0; i < 10; i++) {
+        //     var datumXPosition = Math.floor(Math.random() * 500);
+        //     var datumYPosition = Math.floor(Math.random() * 100);
+        //     dataset.push([datumXPosition, datumYPosition]);
+        //     console.log([datumXPosition, datumYPosition]);
+        // }
+        
+        
+    </script>
+</body>
+</html>
