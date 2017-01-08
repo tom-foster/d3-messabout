@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        //width and height
+        var w = 500;
+        var h = 100;
+        var barPadding = 1;
+
+        //random dataset of 25 values less than 25
+        var dataset = [];
+
+        for (var i = 0; i < 25; i++) {
+            var datum = Math.floor(Math.random() * 25);
+            dataset.push(datum);
+        }
+
+        //create svg
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //create rectangles
+        svg.selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attr('x', function(d, i) {
+                return i * (w / dataset.length);
+            })
+            .attr('y', function(d) {
+                //scaled up by 4
+                return h - (d * 4);
+            })
+            .attr('width', w / dataset.length - barPadding)
+            .attr('height', function(d) {
+                // scaled up by 4
+                return d * 4;
+            })
+            // taller and pinker
+            .attr('fill', function(d){
+                return 'rgb(' + (140 + (d * 5)) + ',105, 180)';
+            });
+        
+        //add text boxes to each value
+        svg.selectAll('text')
+            .data(dataset)
+            .enter()
+            .append('text')
+            .text(function(d){
+                return d;
+            })
+            .attr('x', function(d, i) {
+                //amend the x to make them sit better
+                return i * (w / dataset.length) + 5; //+ 5 to center it in the bar
+            })
+            .attr('y', function(d) {
+                // scaled up by 4
+                return h - (d * 4) + 15; //+15 to send it inside the bar
+            })
+            .attr('font-family', 'sans-serif')
+            .attr('font-size', '11px')
+            .attr('fill', 'white');
+            
+
+
+
+    </script>
+</body>
+</html>
