@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <h1>Using square root for the size</h1>
+    <p>You should map the value to the area of the circle, it's perceiptually easier to understand, than the radius.</p>
+    <script>
+        
+        //width and height
+        var w = 500;
+        var h = 100;
+
+        //random dataset of ten values
+        var dataset = [];
+
+        for (var i = 0; i < 10; i++) {
+            var datumXPosition = Math.floor(Math.random() * 500);
+            var datumYPosition = Math.floor(Math.random() * 100);
+            dataset.push([datumXPosition, datumYPosition]);
+            //check in console
+            console.log([datumXPosition, datumYPosition]);
+        }
+
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //create circles
+        svg.selectAll('circle')
+            .data(dataset)
+            .enter()
+            .append('circle')
+            .attr('cx', function(d) {
+                return d[0];
+            })
+            .attr('cy', function(d) {
+                return d[1];
+            })
+            //create a circle based on the area
+            //circles at the top of the svgw will be bigger
+            .attr('r', function(d) {
+                return Math.sqrt(h - d[1]);
+            });
+    </script>
+</body>
+</html>

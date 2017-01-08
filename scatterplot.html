@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        
+        //width and height
+        var w = 500;
+        var h = 100;
+
+        //random dataset
+        var dataset = [];
+
+        //create a random array
+        for (var i = 0; i < 10; i++) {
+            var datumXPosition = Math.floor(Math.random() * 500);
+            var datumYPosition = Math.floor(Math.random() * 100);
+            dataset.push([datumXPosition, datumYPosition]);
+            //just to show the random arrays in the console for ease.
+            console.log([datumXPosition, datumYPosition]);
+        }
+
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+        
+        //create circles for the scatterplot
+        svg.selectAll('circle')
+            .data(dataset)
+            .enter()
+            .append('circle')
+            .attr('cx', function(d) {
+                //first position is datumXPosition
+                return d[0];
+            })
+            .attr('cy', function(d) {
+                //second position (or 1) is datumYPosition
+                return d[1];
+            })
+            .attr('r', 5);
+
+    </script>
+</body>
+</html>
