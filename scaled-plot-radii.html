@@ -7,14 +7,15 @@
 </head>
 <body>
     <script>
-        //width and height
+        //width, height and padding
         var w = 500;
         var h = 100;
+        var padding = 20;
 
         //random dataset of 10 2 arrayed variables
         var dataset = [];
 
-        for (var i = 0; i < 10; i++) {
+        for (i = 0; i < 10; i++) {
             var datumXPosition = Math.floor(Math.random() * 500);
             var datumYPosition = Math.floor(Math.random() * 100);
             dataset.push([datumXPosition, datumYPosition]);
@@ -26,14 +27,20 @@
                         .domain([0, d3.max(dataset, function(d) {
                             return d[0];
                         })])
-                        .range([0, w]);
-
+                        .range([padding, w - padding * 2]);
+        
         var yScale = d3.scaleLinear()
                         .domain([0, d3.max(dataset, function(d) {
                             return d[1];
                         })])
-                        //invert to have the larger y numbers at the top numbers at the top
-                        .range([h, 0]);
+                        .range([h - padding, padding]);
+        
+        //create a scale for the radii of the circles
+        var rScale = d3.scaleLinear()
+                        .domain([0, d3.max(dataset, function(d) {
+                            return d[1];
+                        })])
+                        .range([2,5]);
 
         //create svg
         var svg = d3.select('body')
@@ -48,17 +55,16 @@
             .enter()
             .append('circle')
             .attr('cx', function(d) {
-                //use scale functions
                 return xScale(d[0]);
             })
             .attr('cy', function(d) {
-                //use scale functions
                 return yScale(d[1]);
             })
+            //now uses the rScale
             .attr('r', function(d) {
-                return Math.sqrt(h - d[1]);
+                return rScale(d[1]);
             });
-
+        
         //create labels
         svg.selectAll('text')
             .data(dataset)
@@ -67,17 +73,17 @@
             .text(function(d) {
                 return d[0] + ', ' + d[1];
             })
-            .attr('x', function(d) {
-                // scale
+            .attr('x', function(d){
                 return xScale(d[0]);
             })
-            .attr('y', function(d) {
-                //scale
+            .attr('y', function(d){
                 return yScale(d[1]);
             })
             .attr('font-family', 'sans-serif')
             .attr('font-size', '12px')
             .attr('fill', 'hotpink');
+
+
 
 
     </script>
