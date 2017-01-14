@@ -31,7 +31,7 @@
                         .domain([0, d3.max(dataset, function(d) {
                             return d[0];
                         })])
-                        .range([padding, w - padding * 2]);
+                        .range([padding, w - padding * 2.2]);
 
         var yScale = d3.scaleLinear()
                         .domain([0, d3.max(dataset, function(d) {
@@ -85,7 +85,7 @@
                 return yScale(d[1]);
             })
             .attr('font-family', 'sans-serif')
-            .attr('font-size', '12px')
+            .attr('font-size', '11px')
             .attr('fill', 'hotpink');
 
         //append the xAxis to the scatterplot
