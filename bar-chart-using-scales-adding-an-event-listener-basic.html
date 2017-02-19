@@ -2,40 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>D3 template</title>
+    <title>Adding a simple event listener for demo purposes</title>
     <script src="d3/d3.min.js"></script>
 </head>
 <body>
-    <h1>Bar chart now using scales</h1>
-    <p>This has significant changes to d3 from version 3 to version 4.</p>
-    <p>No longer scaleOrdinal, but scaleBand, rangeRound only takes an array.</p>
-    <p>To add padding, paddingInner or PaddingOuter.</p>
+    <h1>Click the paragraph to see an alert as an example in d3.</h1>
+    <p>Boop!</p>
     <script>
         //width and height
         var w = 600;
         var h = 300;
+        
 
         var dataset = [];
-
+        
         for (var i = 0; i < 20; i++) {
             datum = Math.floor(Math.random() * 25);
             dataset.push(datum);
             console.log(datum);
         }
 
-        //it's scaleBand in version 4
-        //rangeRound only takes the array
-        //paddingInner to add padding
+        //it's scaleBand in version 4 not scale ordinal
         var xScale = d3.scaleBand()
                         .domain(d3.range(dataset.length))
                         .rangeRound([0, w])
                         .paddingInner(0.05);
-        
-        //takes a scaleLinear, for the height, straight forward, no accessor function
+
+        //takes a scaleLinear for the height, straight forward, no accessor function
         //needed as it's not an array of data.
         var yScale = d3.scaleLinear()
                         .domain([0, d3.max(dataset)])
                         .range([0, h]);
+
 
         //create svg element
         var svg = d3.select('body')
@@ -63,7 +61,7 @@
                 return yScale(d);
             })
             .attr('fill', function(d) {
-                return 'rgb(' + (140 + (d *5)) + ',105,180)';
+                return 'rgb(' + (140 + (d * 5)) + ',105,180)';
             });
 
         //create text labels
@@ -86,8 +84,12 @@
             .attr('font-family', 'sans-serif')
             .attr('font-size', '11px')
             .attr('fill', 'white');
-
-
+        
+        //a simple event listener to create an alert
+        d3.select('p')
+            .on('click', function() {
+                alert('Boop!');
+            });
     </script>
 </body>
 </html>
