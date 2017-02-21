@@ -6,8 +6,7 @@
     <script src="d3/d3.min.js"></script>
 </head>
 <body>
-    <h1>Click on the paragraph to randomise the data</h1>
-    <h2>This will only update the bars, but won't update the colours, or labels currently </h2>
+    <h1>Click on the paragraph to generation the new graph.</h1>
     <p>Boop!</p>
     <script>
         //width and height
@@ -22,14 +21,11 @@
             console.log(datum);
         }
 
-        //scaleBand in v4 not scale.ordinal
         var xScale = d3.scaleBand()
                         .domain(d3.range(dataset.length))
                         .rangeRound([0, w])
                         .paddingInner(0.05);
 
-        //takes a scaleLinear for the height, no accessor function as it's not an array
-        //of data
         var yScale = d3.scaleLinear()
                         .domain([0, d3.max(dataset)])
                         .range([0, h]);
@@ -39,6 +35,7 @@
                     .append('svg')
                     .attr('width', w)
                     .attr('height', h);
+
 
         //create bars
         svg.selectAll('rect')
@@ -51,13 +48,12 @@
             .attr('y', function(d) {
                 return h - yScale(d);
             })
-            //width is now calculated from the xScale and bandwidth
             .attr('width', xScale.bandwidth())
             .attr('height', function(d) {
                 return yScale(d);
             })
             .attr('fill', function(d) {
-                return 'rgb(' + (140 + (d * 5)) + ',105,180)';
+                return 'rgb(' + (140 + (d * 5)) + ',105, 180)';
             });
 
         //create text labels
@@ -70,57 +66,56 @@
             })
             .attr('text-anchor', 'middle')
             .attr('x', function(d, i) {
-                //take the index + the bandwidth and divid by 2
                 return xScale(i) + xScale.bandwidth() / 2;
             })
             .attr('y', function(d) {
-                //push the text into the bar chart
                 return h - yScale(d) + 14;
             })
             .attr('font-family', 'sans-serif')
             .attr('font-size', '11px')
             .attr('fill', 'white');
 
-        //random the data when people click the event listener on Boop!
+        //the new event listener
         d3.select('p')
           .on('click', function() {
+              
+              dataset = [];
 
-            dataset = []
-
-            for (var i = 0; i < 20; i++) {
-                var datum = Math.floor(Math.random() * 25);
-                dataset.push(datum);
-                console.log(datum);
+              for (var i = 0; i < 20; i++) {
+                  var datum = Math.floor(Math.random() * 25);
+                  dataset.push(datum);
+                  console.log(datum);
               }
 
-              //now rework the svg on the page
-            svg.selectAll('rect')
-                .data(dataset)
-                .attr('y', function(d) {
-                    return h - yScale(d);
+              svg.selectAll('rect')
+                 .data(dataset)
+                 //transition makes it smooth on click
+                 .transition()
+                 .attr('y', function(d) {
+                     return h - yScale(d);
                  })
                  .attr('height', function(d) {
                      return yScale(d);
                  })
-                 //add the colour
                  .attr('fill', function(d) {
-                     return 'rgb(' + (140 + (d * 5)) + ',105,180)';
+                     return 'rgb(' + (140 + (d *5)) + ',105,180)';
                  });
+              
+              svg.selectAll('text')
+                 .data(dataset)
+                 .text(function(d) {
+                     return d;
+                 })
+                 .attr('x', function(d, i) {
+                     return xScale(i) + xScale.bandwidth() / 2;
+                 })
+                 .attr('y', function(d) {
+                     return h - yScale(d) + 14;
+                 });
+          });
 
-            //refresh the text too
-            svg.selectAll('text')
-                .data(dataset)
-                .text(function(d) {
-                    return d;
-                })
-                .attr('x', function(d, i) {
-                    return xScale(i) + xScale.bandwidth() / 2;
-                })
-                .attr('y', function(d) {
-                    return h - yScale(d) + 14;
-                });
 
-        });
+
     </script>
 </body>
 </html>
