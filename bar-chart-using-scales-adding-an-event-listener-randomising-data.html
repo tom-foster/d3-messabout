@@ -12,7 +12,7 @@
     <script>
         //width and height
         var w = 600;
-        var h = 300;
+        var h = 250;
 
         var dataset = [];
 
@@ -85,26 +85,42 @@
         d3.select('p')
           .on('click', function() {
 
-              dataset = []
+            dataset = []
 
-              for (var i = 0; i < 20; i++) {
-                  var datum = Math.floor(Math.random() * 25);
-                  dataset.push(datum);
-                  console.log(datum);
+            for (var i = 0; i < 20; i++) {
+                var datum = Math.floor(Math.random() * 25);
+                dataset.push(datum);
+                console.log(datum);
               }
 
               //now rework the svg on the page
-              svg.selectAll('rect')
-                 .data(dataset)
-                 .attr('y', function(d) {
-                     return h - yScale(d);
+            svg.selectAll('rect')
+                .data(dataset)
+                .attr('y', function(d) {
+                    return h - yScale(d);
                  })
                  .attr('height', function(d) {
                      return yScale(d);
+                 })
+                 //add the colour
+                 .attr('fill', function(d) {
+                     return 'rgb(' + (140 + (d * 5)) + ',105,180)';
                  });
 
+            //refresh the text to
+            svg.selectAll('text')
+                .data(dataset)
+                .text(function(d) {
+                    return d;
+                })
+                .attr('x', function(d, i) {
+                    return xScale(i) + xScale.bandwidth() / 2;
+                })
+                .attr('y', function(d) {
+                    return h - yScale(d) + 14;
+                });
 
-          });
+        });
     </script>
 </body>
 </html>
