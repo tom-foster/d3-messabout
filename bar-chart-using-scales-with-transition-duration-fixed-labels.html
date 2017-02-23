@@ -92,12 +92,15 @@
                     console.log(datum);
                 }
 
+                //secret style points?
+                svg.attr('style', 'background-color: rgba(0, 85, 140,' + Math.random() + ')');
+
                 //rework bars
                 svg.selectAll('rect')
                     .data(dataset)
                     //add the transition and duration
                     .transition()
-                    .duration(1500)
+                    .duration(1100)
                     .attr('y', function(d) {
                         return h - yScale(d);
                     })
@@ -112,7 +115,7 @@
                     .data(dataset)
                     //now the text is moving with the bars
                     .transition()
-                    .duration(1500)
+                    .duration(1100)
                     .text(function(d) {
                         return d;
                     })
