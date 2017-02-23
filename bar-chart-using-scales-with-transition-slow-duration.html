@@ -6,10 +6,10 @@
     <script src="d3/d3.min.js"></script>
 </head>
 <body>
-    <h1>Showing off the duration click the paragraph</h1>
+    <h1>A slow duration, click the paragraph to see it</h1>
     <p>Boop!</p>
     <script>
-        //width and height
+        // width and height
         var w = 600;
         var h = 250;
 
@@ -21,41 +21,44 @@
             console.log(datum);
         }
 
+        //create scales
         var xScale = d3.scaleBand()
-                        .domain(d3.range(dataset.length))
-                        .range([0, w])
-                        .paddingInner(0.05);
+                       .domain(d3.range(dataset.length))
+                       .range([0, w])
+                       .paddingInner(0.05);
 
         var yScale = d3.scaleLinear()
-                        .domain([0, d3.max(dataset)])
-                        .range([0, h]);
-        
+                       .domain([0, d3.max(dataset)])
+                       .range([0, h]);
+
         //create svg
         var svg = d3.select('body')
                     .append('svg')
                     .attr('width', w)
-                    .attr('height', h);
-        
-        //create bars
+                    .attr('height', h)
+                    //just to highlight the numbers better
+                    .attr('style', 'background-color: rgba(5, 85, 140, 0.2)');
+
+        //create bar charts
         svg.selectAll('rect')
-            .data(dataset)
-            .enter()
-            .append('rect')
-            .attr('x', function(d, i) {
-                return xScale(i);
-            })
-            .attr('y', function(d) {
-                return h - yScale(d);
-            })
-            .attr('width', xScale.bandwidth())
-            .attr('height', function(d) {
-                return yScale(d);
-            })
-            .attr('fill', function(d) {
-                return 'rgb(' + (140 + (d *5)) + ',105,180)';
-            });
+           .data(dataset)
+           .enter()
+           .append('rect')
+           .attr('x', function(d, i) {
+               return xScale(i);
+           })
+           .attr('y', function(d) {
+               return h - yScale(d);
+           })
+           .attr('width', xScale.bandwidth())
+           .attr('height', function(d) {
+               return yScale(d);
+           })
+           .attr('fill', function(d) {
+               return 'rgb(' + (140 + (d * 5)) + ',105,180)';
+           });
         
-        //create text labels
+        //create text boxes
         svg.selectAll('text')
             .data(dataset)
             .enter()
@@ -74,29 +77,28 @@
             .attr('font-size', '11px')
             .attr('fill', 'white');
 
-        //the event listener for changing the graph
+        //the event listener on click
         d3.select('p')
           .on('click', function() {
+              //for debugging
+              console.log('new dataset!')
               
-              //just for the purposes of information
-              console.log("Clicked! new dataset below");
-              //clear dataset and generate new random dataset
+              //clear dataset and generate a new one
               dataset = [];
 
-              for(var i = 0; i < 20; i++) {
-                  var datum = Math.floor(Math.random() *25);
+              for (var i = 0; i < 20; i++) {
+                  var datum = Math.floor(Math.random() * 25);
                   dataset.push(datum);
                   console.log(datum);
               }
 
-
-              //rework bars
+              //rework the bars
               svg.selectAll('rect')
                  .data(dataset)
-                 //add the transition
+                 //the transition
                  .transition()
-                 //now add the delay specify in milliseconds
-                 .duration(850)
+                 //and it much slower
+                 .duration(5000)
                  .attr('y', function(d) {
                      return h - yScale(d);
                  })
@@ -104,27 +106,23 @@
                      return yScale(d);
                  })
                  .attr('fill', function(d) {
-                     return 'rgb(' + (140 + (d * 5)) + ',105,180)';
+                     return 'rgb(' + (140 + (d *5 )) + ',105,180)';
                  });
-                
-              //rework text labels
+              
+              //rework the labels
               svg.selectAll('text')
                  .data(dataset)
                  .text(function(d) {
                      return d;
                  })
-                 .attr('x', function(d, i) {
+                 .attr('x', function(d, i ) {
                      return xScale(i) + xScale.bandwidth() / 2;
                  })
                  .attr('y', function(d) {
                      return h - yScale(d) + 14;
                  })
 
-            
-
           });
-
-
 
     </script>
 </body>
