@@ -6,12 +6,12 @@
     <script src="d3/d3.min.js"></script>
 </head>
 <body>
-    <h1>Another example of changing the animation using Ease - circle</h1>
+    <h1>A simple delay added</h1>
     <p>Boop!</p>
     <script>
-        // width and height
+        //with and height
         var w = 600;
-        var h = 300;
+        var h = 250;
 
         //create dataset
         var dataset = [];
@@ -57,7 +57,7 @@
                 return 'rgb(' + (140 + (d * 5)) + ',105,180)';
             });
 
-        //create labels
+        //create text labels
         svg.selectAll('text')
             .data(dataset)
             .enter()
@@ -66,7 +66,7 @@
                 return d;
             })
             .attr('text-anchor', 'middle')
-            .attr('x', function(d, i){
+            .attr('x', function(d, i) {
                 return xScale(i) + xScale.bandwidth() / 2;
             })
             .attr('y', function(d) {
@@ -76,29 +76,28 @@
             .attr('font-size', '11px')
             .attr('fill', 'white');
 
-        //the event listener when the p is clicked do something
-        //we're still doing transition, duration and Ease
-        //this time a new ease!
+        //create an event listener
         d3.select('p')
             .on('click', function() {
-                //for console info
-                console.log('event listener clicked! new data below');
+                //create a quick alert in console
+                console.log('event listener clicked! new dataset below');
 
-                //clear dataset and create a new dataset
+                //new dataset
                 dataset = [];
 
                 for (var i = 0; i < 20; i++) {
                     var datum = Math.floor(Math.random() * 25);
-                    dataset.push(datum)
+                    dataset.push(datum);
                     console.log(datum);
                 }
 
-                //update the bars
+                //rework bars - now with added delay
                 svg.selectAll('rect')
                     .data(dataset)
                     .transition()
-                    .duration(1500)
-                    //now a new ease, circle
+                    //delay before the duration for easy reading
+                    .delay(2000)
+                    .duration(5000)
                     .ease(d3.easeCircle)
                     .attr('y', function(d) {
                         return h - yScale(d);
@@ -107,28 +106,29 @@
                         return yScale(d);
                     })
                     .attr('fill', function(d) {
-                        return 'rgb(' + (140 + (d *5)) + ',105,180)';
+                        return 'rgb(' + (140 + (d * 5)) + ',105,180)';
                     });
 
-               //update the labels
-               svg.selectAll('text')
-                  .data(dataset)
-                  .transition()
-                  .duration(1500)
-                  //now a new ease circle
-                  .ease(d3.easeCircle)
-                  .text(function(d) {
-                      return d;
-                  })
-                  .attr('x', function(d, i ){
-                      return xScale(i) + xScale.bandwidth() / 2;
-                  })
-                  .attr('y', function(d) {
-                      return h - yScale(d) + 14;
-                  });
+
+                //rework labels
+                svg.selectAll('text')
+                    .data(dataset)
+                    .transition()
+                    //delay before the duration for easy reading
+                    .delay(2000)
+                    .duration(5000)
+                    .ease(d3.easeCircle)
+                    .text(function(d) {
+                        return d;
+                    })
+                    .attr('x', function(d, i) {
+                        return xScale(i) + xScale.bandwidth() / 2;
+                    })
+                    .attr('y', function(d) {
+                        return h - yScale(d) + 14;
+                    });
+
             });
-
-
 
     </script>
 </body>
