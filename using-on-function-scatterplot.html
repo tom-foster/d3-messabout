@@ -6,10 +6,10 @@
     <script src="d3/d3.min.js"></script>
 </head>
 <body>
-    <h1>Updating axis on scatterplot</h1>
+    <h1>Using the each() function</h1>
     <p>Boop!</p>
     <script>
-        //width, height, padding
+        //width, height and padding
         var w = 600;
         var h = 300;
         var padding = 30;
@@ -37,9 +37,10 @@
                         .domain([0, d3.max(dataset, function(d) {
                             return d[1];
                         })])
+                        //always remember for a scatter, it's the bottom first
                         .range([h - padding, padding]);
 
-        //create axis
+        //create x and y Axis
         var xAxis = d3.axisBottom(xScale)
                         .ticks(5);
 
@@ -67,26 +68,27 @@
 
         //append xAxis
         svg.append('g')
-            .attr('class', 'x axis') //added a new class
+            .attr('class', 'x axis')
+            //translate takes the x, y of the svg
             .attr('transform', 'translate(0,' + (h - padding) + ')')
             .call(xAxis);
 
         //append yAxis
         svg.append('g')
-            .attr('class', 'y axis') //added a new class
+            .attr('class', 'y axis')
             .attr('transform', 'translate(' + padding + ',0)')
-            .call(yAxis);
+            .call(yAxis)
 
         //create the event listener
         d3.select('p')
             .on('click', function() {
-                console.log('event clicked, new dataset');
+                //debug
+                console.log('event listener clicked, new data');
 
                 var numDataPoints = dataset.length;
                 var maxRange = Math.random() * 1000;
-                //clear dataset
+                //clear dataset and create new data
                 dataset = [];
-
                 for (var i = 0; i < numDataPoints; i++) {
                     var newDatumXPosition = Math.floor(Math.random() * maxRange);
                     var newDatumYPosition = Math.floor(Math.random() * maxRange);
@@ -94,44 +96,58 @@
                     console.log(newDatumXPosition, newDatumYPosition);
                 }
 
-                //update the scales
+                //update domains of the x and y scales
                 xScale.domain([0, d3.max(dataset, function(d) {
                     return d[0];
-                })]);
+                })])
 
                 yScale.domain([0, d3.max(dataset, function(d) {
                     return d[1];
-                })]);
+                })])
 
-                //rework the circles
+                //create circles
                 svg.selectAll('circle')
                     .data(dataset)
                     .transition()
                     .duration(1000)
+                    //It's no longer the each function to do start and stop
+                    //transitions
+                    //now it's on()
+                    .on('start', function() {
+                        //you will break the code putting a second transition in
+                        //the start function.
+                        d3.select(this)
+                        .attr('fill', 'hotpink')
+                        .attr('r', 5);
+                    })
                     .attr('cx', function(d) {
                         return xScale(d[0]);
                     })
                     .attr('cy', function(d) {
                         return yScale(d[1]);
-                    });
+                    })
+                    .on('end', function() {
+                        d3.select(this)
+                        .transition()
+                        .duration(1000)
+                        .attr('fill', 'black')
+                        .attr('r', 2);
+                    })
 
-                //rework the xAxis - much easier
+                //update xAxis
                 svg.select('.x.axis')
                     .transition()
                     .duration(1000)
                     .call(xAxis);
 
-                //rework the yAxis - much easier
+                //update yAxis
                 svg.select('.y.axis')
                     .transition()
                     .duration(1000)
                     .call(yAxis);
+
                 
             });
-
-
-
-        
     </script>
 </body>
 </html>
