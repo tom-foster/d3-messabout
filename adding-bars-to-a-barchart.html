@@ -102,10 +102,12 @@
                     .attr('height', function(d) {
                         return yScale(d);
                     })
-                    
+                    .attr('fill', function(d) {
+                        return 'rgb(' + (140 + (d*5)) + ',105,180)';
+                    });       
                 
                 //update
-                //there is an error with this, it requires two clicks to complete
+                //there is an error with this, it requires two clicks to complete the transition
                 bars.transition()
                     .duration(500)
                     .attr('x', function(d, i) {
@@ -117,9 +119,6 @@
                     .attr('width', xScale.bandwidth())
                     .attr('height', function(d) {
                         return yScale(d);
-                    })
-                    .attr('fill', function(d) {
-                        return 'rgb(' + (140 + (d *5)) + ',105,180)';
                     });
 
                 //select labels
@@ -149,7 +148,7 @@
                       })
                       .attr('y', function(d) {
                           return h - yScale(d) + 14;
-                      })
+                      });
 
                 
 
