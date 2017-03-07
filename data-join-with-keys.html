@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <h1>Using a data join with key</h1>
+    <p>Boop!</p>
+    <script>
+        //width and height
+        var w = 600;
+        var h = 250;
+
+        //create a random array of objects this time
+        var dataset = [];
+        for (var i = 0; i < 20; i++) {
+            var key = i;
+            var value = Math.floor(Math.random() * 25);
+            dataset.push({key, value});
+        }
+
+        //create scales
+        var xScale = d3.scaleBand()
+                        .domain(d3.range(dataset.length))
+                        .range([0, w])
+                        .paddingInner(0.05);
+
+        var yScale = d3.scaleLinear()
+                        .domain([0, d3.max(dataset, function(d) {
+                            return d.value;
+                        })])
+                        .range([0, h]);
+
+        //define the key function which can be used when binding data
+        var key = function(d) {
+            return d.key;
+        }
+
+        //create svg element
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //create bars
+        svg.selectAll('rect')
+            .data(dataset, key) //bind the data with function declared line 37
+            .enter()
+            .append('rect')
+            .attr('x', function(d, i) {
+                return xScale(i);
+            })
+            .attr('y', function(d) {
+                //because the data is now an object you'll need a key pair value
+                return h - yScale(d.value);
+            })
+            .attr('width', xScale.bandwidth())
+            .attr('height', function(d) {
+                return yScale(d.value);
+            })
+            .attr('fill', function(d) {
+                return 'rgb(' + (140 + (d.value * 5) + ',105,180)');
+            });
+
+
+
+    </script>
+</body>
+</html>
