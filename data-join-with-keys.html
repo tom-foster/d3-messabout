@@ -17,8 +17,8 @@
         var dataset = [];
         for (var i = 0; i < 20; i++) {
             var key = i;
-            var value = Math.floor(Math.random() * 25);
-            dataset.push({key, value});
+            var number = Math.floor(Math.random() * 25);
+            dataset.push({key: key, value: number});
         }
 
         //create scales
@@ -110,7 +110,7 @@
                         return yScale(d.value);
                     })
                     .attr('fill', function(d) {
-                        return 'rgb(' + (140 + (d * 5)) + ',105,180)';
+                        return 'rgb(' + (140 + (d.value * 5)) + ',105,180)';
                     })
                 
                 //bars get updated
@@ -134,8 +134,31 @@
                     .attr('x', -xScale.bandwidth()) //transition off the page correctly
                     .remove();
 
+                //update the labels
+                var labels = svg.selectAll('text').data(dataset, key);
 
-            })
+                //update
+                labels.transition()
+                    .duration(500)
+                    .text(function(d) {
+                        return d.value;
+                    })
+                    .attr('x', function(d, i) {
+                        return xScale(i) + xScale.bandwidth() / 2;
+                    })
+                    .attr('y', function(d) {
+                        return h - yScale(d.value) + 14;
+                    });
+
+                //exit
+                labels.exit()
+                    .transition()
+                    .duration(500)
+                    .attr('x', -xScale.bandwidth()) //exit left
+                    .remove();
+
+
+            });
         
 
 
