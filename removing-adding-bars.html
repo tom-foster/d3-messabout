@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <h1>Adding and removing bars and labels</h1>
+    <p id='add'>Add a new bar</p>
+    <p id='remove'>Remove a bar</p>
+    <script>
+        //width and height
+        var w = 600;
+        var h = 300;
+
+        //create a dataset
+        var dataset = []
+        //create objects for the dataset array
+        for (var i  = 0; i < 20; i++) {
+            var key = i;
+            var value = Math.floor(Math.random() * 25);
+            dataset.push({key : key, value: value});
+        }
+
+        //create the xScale
+        var xScale = d3.scaleBand()
+                        .domain(d3.range(dataset.length))
+                        .range([0, w])
+                        .paddingInner(0.05);
+
+        //create the yScale
+        var yScale = d3.scaleLinear()
+                        .domain([0, d3.max(dataset, function(d) {
+                            return d.value;
+                        })])
+                        .range([0, h]);
+
+        //define the key function for binding data
+        var key = function(d) {
+            return d.key;
+        }
+
+        //create svg element
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+       //create the bars
+       svg.selectAll('rect')
+          .data(dataset, key)
+          .enter()
+          .append('rect')
+          .attr('x', function(d, i) {
+              return xScale(i);
+          })
+          .attr('y', function(d) {
+              return h - yScale(d.value);
+          })
+          .attr('width', xScale.bandwidth())
+          .attr('height', function(d) {
+              return yScale(d.value);
+          })
+          .attr('fill', function(d) {
+              return 'rgb(' + (140 + (d.value * 5)) + ',105,180)';
+          })
+
+        svg.selectAll('text')
+            .data(dataset, key)
+            .enter()
+            .append('text')
+            .text(function(d) {
+                return d.value;
+            })
+            .attr('text-anchor', 'middle')
+            .attr('x', function(d, i) {
+                return xScale(i) + xScale.bandwidth() / 2;
+            })
+            .attr('y', function(d) {
+                return h - yScale(d.value) + 14;
+            })
+            .attr('font-family', 'sans-serif')
+            .attr('font-size', '11px')
+            .attr('fill', 'white');
+
+        //create the event listener to add and remove bars and labels
+        d3.selectAll('p')
+            .on('click', function() {
+                //define a variable to check the paragraph ID
+                var paragraphID = d3.select(this).attr('id');
+
+                //conditional to decided if adding a key or removing
+                if (paragraphID == 'add') {
+                    //add a data value
+                    var maxValue = 25;
+                    var newNumber = Math.floor(Math.random() * maxValue);
+                    //because computers start at 0
+                    var lastKeyValue = dataset[dataset.length - 1].key;
+                    console.log(lastKeyValue);
+                    dataset.push({
+                        key: lastKeyValue + 1,
+                        value: newNumber
+                    });
+                } else {
+                    //Remove a value
+                    dataset.shift(); //remove the first item from the dataset 
+                }
+
+                //update the scale domains
+                xScale.domain(d3.range(dataset.length));
+                yScale.domain([0, d3.max(dataset, function(d) {
+                    return d.value;
+                })])
+
+                //select the bars
+                var bars = svg.selectAll('rect')
+                              .data(dataset, key);
+
+                //enter that data
+                bars.enter()
+                    .append('rect')
+                    .attr('x', w)
+                    .attr('y', function(d) {
+                        return h - yScale(d.value);
+                    })
+                    .attr('width', xScale.bandwidth())
+                    .attr('height', function(d) {
+                        return h - yScale(d.value);
+                    })
+                    .attr('fill', function(d) {
+                        return 'rgb(' + (140 + (d.value * 5)) + ',105, 180)';
+                    });
+
+                //now update the bars
+                bars.transition()
+                    .duration(500)
+                    .attr('x', function(d, i) {
+                        return xScale(i);
+                    })
+                    .attr('y', function(d) {
+                        return h - yScale(d.value);
+                    })
+                    .attr('width', xScale.bandwidth())
+                    .attr('height', function(d) {
+                        return yScale(d.value);
+                    });
+
+                //exit the bars
+                bars.exit()
+                    .transition()
+                    .duration(500)
+                    .attr('x', -xScale.bandwidth())
+                    .remove();
+
+                //update all the labels
+                //select the labels
+                var labels = svg.selectAll('text')
+                                .data(dataset, key);
+
+                //enter
+                labels.enter()
+                      .append('text')
+                      .text(function(d) {
+                          return d.value;
+                      })
+                      .attr('text-anchor', 'middle')
+                      .attr('x', w)
+                      .attr('y', function(d) {
+                          return h - yScale(d.value) + 14;
+                      })
+                      .attr('font-family', 'sans-serif')
+                      .attr('font-size', '11px')
+                      .attr('fill', 'white');
+
+                //update
+                labels.transition()
+                      .duration(500)
+                      .attr('x', function(d, i) {
+                          return xScale(i) + xScale.bandwidth() / 2;
+                      });
+
+                //exit
+                labels.exit()
+                      .transition()
+                      .duration(500)
+                      .attr('x', -xScale.bandwidth())
+                      .remove();
+            })
+
+    </script>
+</body>
+</html>
