@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <h1>A smoother transition using transition with mouseover and mouseout</h1>
+    <script>
+        //width and height
+        var w = 600;
+        var h = 300;
+
+        //dataset
+        var dataset = [];
+        for (var i = 0; i < 20; i++) {
+            var datum = Math.floor(Math.random() * 25);
+            dataset.push(datum);
+        }
+
+        //create xscale
+        var xScale = d3.scaleBand()
+                        .domain(d3.range(dataset.length))
+                        .range([0, w])
+                        .paddingInner(0.05);
+
+        //create yScale
+        var yScale = d3.scaleLinear()
+                        .domain([0, d3.max(dataset)])
+                        .range([0, h]);
+
+        //svg
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //create bars
+        svg.selectAll('rect')
+           .data(dataset)
+           .enter()
+           .append('rect')
+           .attr('x', function(d, i) {
+               return xScale(i);
+           })
+           .attr('y', function(d) {
+               return h - yScale(d);
+           })
+           .attr('width', xScale.bandwidth())
+           .attr('height', function(d) {
+               return yScale(d);
+           })
+           .attr('fill', function(d) {
+               return 'rgb(' + (140 + (d * 5)) + ',105,180)';
+           })
+           .on('mouseover', function(d) {
+               d3.select(this)
+                 .attr('fill', 'gold')
+           })
+           .on('mouseout', function(d) {
+               d3.select(this)
+               //now added a transition
+                 .transition()
+                 .duration(250)
+                 .attr('fill', function(d) {
+                     return 'rgb(' + (140 + (d * 5)) + ',105,180)';
+                 })
+           });
+        
+        //create labels
+        svg.selectAll('text')
+            .data(dataset)
+            .enter()
+            .append('text')
+            .text(function(d){
+                return d;
+            })
+            .attr('text-anchor', 'middle')
+            .attr('x', function(d, i) {
+                return xScale(i) + xScale.bandwidth() / 2;
+            })
+            .attr('y', function(d) {
+                return h - yScale(d) + 14;
+            })
+            .attr('font-family', 'sans-serif')
+            .attr('font-size', '11px')
+            .attr('fill', 'white');
+    </script>
+</body>
+</html>
