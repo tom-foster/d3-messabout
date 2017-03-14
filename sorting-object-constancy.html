@@ -4,16 +4,10 @@
     <meta charset="UTF-8">
     <title>D3 template</title>
     <script src="d3/d3.min.js"></script>
-    <style>
-        rect:hover {
-            fill: gold;
-        }
-    </style>
 </head>
 <body>
-    <h1>Resorting to re-sorting</h1>
-    <p>Badum tssss</p>
-
+    <h1>Sorting with object constancy</h1>
+    <p>It should feel like it's telling a story</p>
     <script>
         //width and height
         var w = 600;
@@ -26,13 +20,13 @@
             dataset.push(datum);
         }
 
-        //xScale
+        //xscale
         var xScale = d3.scaleBand()
                         .domain(d3.range(dataset.length))
                         .range([0, w])
                         .paddingInner(0.05);
 
-        //yScale
+        // yscale
         var yScale = d3.scaleLinear()
                         .domain([0, d3.max(dataset)])
                         .range([0, h]);
@@ -55,15 +49,15 @@
                 return h - yScale(d);
             })
             .attr('width', xScale.bandwidth())
-            .attr('height', function(d){
+            .attr('height', function(d) {
                 return yScale(d);
             })
             .attr('fill', function(d) {
                 return 'rgb(' + (140 + (d * 5)) + ',105,180)';
             })
-            .on('click', function(d) {
+            .on('click', function() {
                 sortBars();
-            });
+            })
 
         //text labels
         svg.selectAll('text')
@@ -84,18 +78,17 @@
             .attr('font-size', '11px')
             .attr('fill', 'white');
 
-        //define the sort order flag
+        //define the sort order bool
         var sortOrder = false;
 
-        //Define the sort function
+        //sort function
         var sortBars = function() {
-
-            //sort Order now changes - since it's now getting activated
+            
+            //flip the order for next time
             sortOrder = !sortOrder;
 
             svg.selectAll('rect')
                 .sort(function(a, b) {
-                    //below is shorthand for if true
                     if (sortOrder) {
                         return d3.ascending(a, b);
                     }
@@ -104,27 +97,33 @@
                     }
                 })
                 .transition()
+                .delay(function(d, i) {
+                    return i * 50;
+                })
                 .duration(1000)
                 .attr('x', function(d, i) {
                     return xScale(i);
-                });
-            
-            //labels
+                })
+
+            //sort labels too
             svg.selectAll('text')
                 .sort(function(a, b) {
                     if (sortOrder) {
                         return d3.ascending(a, b);
-                    }
-                    else {
-                       return d3.descending(a, b);
+                    } else {
+                        return d3.descending(a, b);
                     }
                 })
                 .transition()
+                .delay(function(d, i) {
+                    return i * 50;
+                })
                 .duration(1000)
                 .attr('x', function(d, i) {
                     return xScale(i) + xScale.bandwidth() / 2;
                 });
         };
+
     </script>
 </body>
 </html>
