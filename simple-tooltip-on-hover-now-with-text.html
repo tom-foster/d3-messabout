@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+    <style>
+        rect:hover {
+            fill: gold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Using the title as a tooltip</h1>
+    <script>
+        //width and height
+        var w = 600;
+        var h = 300;
+
+        //dataset
+        var dataset = [];
+        for (var i = 0; i < 20; i++) {
+            var datum = Math.floor(Math.random() * 25);
+            dataset.push(datum);
+        }
+
+        // xscale
+        var xScale = d3.scaleBand()
+                        .domain(d3.range(dataset.length))
+                        .range([0, w])
+                        .paddingInner(0.05);
+        // yscale
+        var yScale = d3.scaleLinear()
+                        .domain([0, d3.max(dataset)])
+                        .range([0, h]);
+
+        //svg
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        // bars
+        svg.selectAll('rect')
+            .data(dataset)
+            .enter()
+            .append('rect')
+            .attr('x', function(d, i) {
+                return xScale(i);
+            })
+            .attr('y', function(d) {
+                return h - yScale(d);
+            })
+            .attr('width', xScale.bandwidth())
+            .attr('height', function(d) {
+                return yScale(d);
+            })
+            .attr('fill', function(d) {
+                return 'rgb(' + (140 + (d * 5)) + ',105,180)';
+            })
+            // sortBars
+            .on('click', function() {
+                sortBars();
+            })
+            // append the html title for the bar
+            //no text labels needed.        
+            .append('title')
+            .text(function(d) {
+                return "The value is " + d;
+            });
+
+        // sortOrder bool
+        var sortOrder = false;
+
+        var sortBars = function() {
+            
+            //flip the order of sortOrder
+            sortOrder = !sortOrder;
+
+            svg.selectAll('rect')
+                .sort(function(a, b) {
+                    if (sortOrder) {
+                        return d3.ascending(a, b);
+                    } else {
+                        return d3.descending(a, b);
+                    }
+                })
+                .transition()
+                .delay(function(d, i) {
+                    return i * 50;
+                })
+                .duration(1000)
+                .attr('x', function(d, i) {
+                    return xScale(i);
+                });
+        };
+
+
+    </script>
+</body>
+</html>
