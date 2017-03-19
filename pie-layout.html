@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <h1>pie chart</h1>
+    <p>Pie is a layout the data out.</p>
+    <script>
+        // width and height
+        var w = 500;
+        var h = 500;
+
+        //dataset
+        var dataset = [];
+        for (var i = 0; i < 6; i++) {
+            var datum = Math.floor(Math.random() * 100);
+            dataset.push(datum);
+        }
+
+        //create the arc - new for version 4 = d3.src()
+        //define the parameterss for the arc
+        var outerRadius = w / 2;
+        //innerRadius = 0 for a doughtnut, then define it greater than 1 for
+        //a doughtnut
+		var innerRadius = 0;
+		var arc = d3.arc()
+					.innerRadius(innerRadius)
+					.outerRadius(outerRadius);
+        
+        //pie is d3.pie() in version 4.
+        var pie = d3.pie();
+			
+		//Built in colors - it's an array in version 4.
+        //you could define your own array of colours in whatever format you want.
+		var color = d3.schemeCategory10;
+
+        //Create SVG element
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+        
+        //Set up groups
+        var arcs = svg.selectAll("g.arc")
+                        .data(pie(dataset))
+                        .enter()
+                        .append("g")
+                        .attr("class", "arc")
+                        .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
+        
+        //Draw arc paths
+        arcs.append("path")
+            .attr("fill", function(d, i) {
+                return color[i];
+            })
+            .attr("d", arc);
+        
+        //Labels
+        arcs.append("text")
+            .text(function(d) {
+                //a better understanding is to look at the __data__ on the object
+                return d.value;
+            })
+            .attr("transform", function(d) {
+                return "translate(" + arc.centroid(d) + ")";
+            })
+            .attr("text-anchor", "middle")
+            .attr('font-size', '14px')
+            .attr('font-family','sans-serif')
+            .attr('fill', 'white');
+    </script>
+</body>
+</html>
