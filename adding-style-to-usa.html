@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <h1>Adding style to the usa</h1>
+    <script>
+        //width and height
+        var w = 600;
+        var h = 300;
+
+        //projection - in d3 version 4 you need to define it otherwise it's assumed
+        //to be null
+        var projection = d3.geoAlbersUsa()
+                            .translate([w/2, h/2])
+                            .scale([500]);
+
+
+        //define the path generator
+        var path = d3.geoPath()
+                     .projection(projection);
+
+        //create svg
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //read the data
+        d3.json('/data/maps/us-states.json', function(json) {
+            //bind the data and create one path per geoJSON feature
+            svg.selectAll('path')
+                .data(json.features)
+                .enter()
+                .append('path')
+                .attr('d', path)
+                //style method for style
+                .style('fill', 'hotpink');
+
+        });
+
+    </script>
+</body>
+</html>
