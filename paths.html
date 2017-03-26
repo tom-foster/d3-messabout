@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+    <style>
+        path {
+            background-color: red;
+            fill: red;
+        }
+        path:hover {
+            fill:blue;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        //width and height
+        var w = 500;
+        var h = 300;
+
+        // var projection = d3.geoAlbersUsa();
+        //use the geoPath
+
+        //in version 4 you would need to pass in a projection, to make the data visible
+        //see https://github.com/d3/d3-geo/blob/master/README.md#projections
+        var path = d3.geoPath().projection(d3.geoMercator());
+        //create svg
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //load in the geoJson data
+
+        var jason;
+        d3.json('/data/maps/us-states.json', function(json) {
+            jason = json;
+
+            //bind data and create one path per geoJson feature
+            svg.selectAll('path')
+                .data(json.features)
+                .enter()
+                .append('path')
+                .attr('d', path);
+        });
+
+
+    </script>
+</body>
+</html>
