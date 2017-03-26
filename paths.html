@@ -15,12 +15,18 @@
     </style>
 </head>
 <body>
+    <h1>Projecting the USA</h1>
     <script>
         //width and height
         var w = 500;
         var h = 300;
 
+
+        //unlike version 3, version 4 you need to pass in a projection, otherwise
+        //no map is displayed as the default is null.
+        //hence it won't display!!!!
         // var projection = d3.geoAlbersUsa();
+
         //use the geoPath
 
         //in version 4 you would need to pass in a projection, to make the data visible
@@ -33,7 +39,7 @@
                     .attr('height', h);
 
         //load in the geoJson data
-
+        //jason value just to check what the data looks like
         var jason;
         d3.json('/data/maps/us-states.json', function(json) {
             jason = json;

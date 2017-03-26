@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <h1>A different layout using projection AlbersUsa</h1>
+    <script>
+        //width and height
+        var w = 500;
+        var h = 300;
+
+        //projection - adjust it to fill up the 
+        var projection = d3.geoAlbersUsa()
+                            .translate([w/2, h/2]);
+
+        //define the path
+        var path = d3.geoPath().projection(projection);
+
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //read the json
+        d3.json('/data/maps/us-states.json', function(json) {
+            //bind data and create one path per geoJSON feature
+            svg.selectAll('path')
+                .data(json.features)
+                .enter()
+                .append('path')
+                .attr('d', path);
+        });
+
+    </script>
+</body>
+</html>
