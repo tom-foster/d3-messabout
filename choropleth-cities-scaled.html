@@ -121,6 +121,16 @@
                     .attr('r', function(d) {
                         return Math.sqrt(parseInt(d.population) * 0.00004);
                     })
+                    .append('title')
+                    .text(function(d) {
+                        return d.place;
+                    });
+                    
+                //added a tooltip which meant the style had to be separated and
+                //applied after
+                //if you removed append title and text, these two styles could be 
+                //added at the bottom of the previous selectAll.
+                svg.selectAll('circle')
                     .style('fill', 'red')
                     .style('opacity', 0.55);
                 });

@@ -119,7 +119,11 @@
                     })
                     .attr('r', 5)
                     .style('fill', 'hotpink')
-                    .style('opacity', 0.55);
+                    .style('opacity', 0.55)
+                    .append('title')
+                    .text(function(d) {
+                        return d.population;
+                    });
                 });
             
             });
