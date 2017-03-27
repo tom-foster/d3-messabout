@@ -6,7 +6,7 @@
     <script src="d3/d3.min.js"></script>
 </head>
 <body>
-    <h1>A choropleth map with top 50 cities</h1>
+    <h1>A choropleth map with scaled top 50 cities</h1>
     <script>
         //width and height
         var w = 600;
@@ -117,8 +117,11 @@
                         //it returns x/y so for y it's the second position in the array
                         return projection([d.lon, d.lat])[1];
                     })
-                    .attr('r', 5)
-                    .style('fill', 'hotpink')
+                    //radius now takes a function, to return size
+                    .attr('r', function(d) {
+                        return Math.sqrt(parseInt(d.population) * 0.00004);
+                    })
+                    .style('fill', 'red')
                     .style('opacity', 0.55);
                 });
             
