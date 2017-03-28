@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>D3 template</title>
+    <script src="d3/d3.min.js"></script>
+</head>
+<body>
+    <h1>The oceans using the geoMercator()</h1>
+    <script>
+        //width and height
+        var w = 500;
+        var h = 300;
+
+        //projection
+        var projection = d3.geoMercator()
+                            .translate([w/2, h/2])
+                            .scale([70]);
+
+        //path generator
+        var path = d3.geoPath().projection(projection);
+
+        //svg
+        var svg = d3.select('body')
+                    .append('svg')
+                    .attr('width', w)
+                    .attr('height', h);
+
+        //load in the the geoJSON
+        d3.json('/data/maps/oceans.json', function(json) {
+
+            //bind data and create one path per geoJSON feature
+            svg.selectAll('path')
+                .data(json.features)
+                .enter()
+                .append('path')
+                .attr('d', path)
+                .style('fill', 'hotpink');
+        });
+    </script>
+</body>
+</html>
